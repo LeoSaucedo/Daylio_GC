@@ -1,3 +1,10 @@
+# Project-Specific
+config.json
+credentials.json
+token.json
+*.csv
+quickstart.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
