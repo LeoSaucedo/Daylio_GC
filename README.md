@@ -1,7 +1,7 @@
 # Daylio_GC
-## A way to import your Daylio entries to Google Calendar.
+### A way to import your Daylio entries to Google Calendar.
 
-#### Installation
+### Installation
 1. Install dependencies and enable the Google Calendar API for your account, described [here](https://developers.google.com/calendar/quickstart/python).
 2. Export your Daylio content. The filename should match `daylio_export.csv`.
 3. Create a calendar for storing your Daylio content.
