@@ -26,6 +26,7 @@ months = {
 
 config = json.load(open("config.json", "r"))
 calendarID = config["calendarId"]
+exportFile = config["csvFilePath"]
 
 SCOPES = 'https://www.googleapis.com/auth/calendar'
 
@@ -39,6 +40,7 @@ def addEvent(entry, dateObject, service):
         "end":{
             "date": str(dateObject)
         },
+        "transparency": "transparent",
         "description": "Time: " + entry[3] + "\nMood: " + entry[4] + "\nActivities: " + entry[5] +  "\nNote: " + entry[6]
     }
     event = service.events().insert(calendarId=calendarID, body=event).execute()
@@ -58,7 +60,7 @@ def main():
     year, date, weekday, time, mood, activities, note
     ex: 2018,August 19,Sunday,9:53 PM,meh,"gaming",""
     """
-    with open("daylio_export.csv") as csv_file:
+    with open(exportFile) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=",")
         line_count = 0
         for entry in csv_reader:
