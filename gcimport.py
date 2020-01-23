@@ -26,6 +26,7 @@ months = {
 
 config = json.load(open("config.json", "r"))
 calendarID = config["calendarId"]
+#TODO: File path as command argument.
 exportFile = config["csvFilePath"]
 
 SCOPES = 'https://www.googleapis.com/auth/calendar'
@@ -71,25 +72,20 @@ def main():
                 CSVDate = entry[1].split()
                 entryYear = int(entry[0])
                 entryMonth = months[CSVDate[0]]
-                entryDate = int(CSVDate[1])
-                
+                entryDate = int(CSVDate[1])              
                 # Creating date and datetime objects for the GC API.
                 dateObject = date(entryYear, entryMonth, entryDate)
-                entryDate = datetime(entryYear, entryMonth, entryDate, 0, 0, 0)
-                
+                dateNum = datetime(entryYear, entryMonth, entryDate)
                 # Accessing the GC API.
                 now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-                queryDate = entryDate.utcnow().isoformat() + "Z"
-                events_result = service.events().list(calendarId=config["calendarId"],
-                                                    singleEvents=True, timeMax=queryDate).execute()
+                queryDate = dateNum.utcnow().isoformat() + "Z"
+                events_result = service.events().list(calendarId=config["calendarId"], orderBy="startTime",
+                                                    singleEvents=True, timeMin=queryDate).execute()
                 events = events_result.get('items', [])
                 
                 if events:
                     for event in events:
-                        print("Event Found: " + event["summary"])
-                        if ("Daily Mood: " in event["summary"]) == False:
-                            print("Event created: " + event["summary"])
-                            addEvent(entry, dateObject, service)
+                        print("Event Found: " + event["summary"] + " " + event["start"]["date"] + " " + str(dateNum.date()))
                 else:
                     print("No events found.")
                     addEvent(entry, dateObject, service)
